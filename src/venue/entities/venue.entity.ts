@@ -1,5 +1,7 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
 import { Col } from "sequelize/types/utils";
+import { District } from "src/district/entities/district.entity";
+import { Region } from "src/region/entities/region.entity";
 
 @Table({tableName: 'venue'})
 export class Venue extends Model<Venue>{
@@ -53,15 +55,19 @@ export class Venue extends Model<Venue>{
     })
     schema: string
     
+    @ForeignKey(()=> Region)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     region_id: number
 
+    @ForeignKey(() => District)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     district_id: number
+
+
 }

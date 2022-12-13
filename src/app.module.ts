@@ -28,11 +28,16 @@ import { Region } from './region/entities/region.entity';
 import { PaymentMethodModule } from './payment_method/payment_method.module';
 import { DeliveryMethodModule } from './delivery_method/delivery_method.module';
 import { DiscountCouponModule } from './discount_coupon/discount_coupon.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { resolve } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: resolve(__dirname, 'static')
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
