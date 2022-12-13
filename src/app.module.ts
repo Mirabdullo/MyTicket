@@ -25,6 +25,9 @@ import { Admin } from './admin/entities/admin.entity';
 import { VenueType } from './venue_type/entities/venue_type.entity';
 import { Country } from './country/entities/country.entity';
 import { Region } from './region/entities/region.entity';
+import { PaymentMethodModule } from './payment_method/payment_method.module';
+import { DeliveryMethodModule } from './delivery_method/delivery_method.module';
+import { DiscountCouponModule } from './discount_coupon/discount_coupon.module';
 
 @Module({
   imports: [
@@ -62,6 +65,9 @@ import { Region } from './region/entities/region.entity';
     TicketTypeModule,
     LanguageModule,
     CountryModule,
+    PaymentMethodModule,
+    DeliveryMethodModule,
+    DiscountCouponModule,
   ],
   controllers: [],
   providers: [],
