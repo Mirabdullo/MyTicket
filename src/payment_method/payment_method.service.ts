@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreatePaymentMethodDto } from './dto/create-payment_method.dto';
 import { UpdatePaymentMethodDto } from './dto/update-payment_method.dto';
+import { PaymentMethod } from './entities/payment_method.entity';
 
 @Injectable()
 export class PaymentMethodService {
+  constructor(
+    @InjectModel(PaymentMethod) private paymentRepository: typeof PaymentMethod
+  ){}
+
   create(createPaymentMethodDto: CreatePaymentMethodDto) {
-    return 'This action adds a new paymentMethod';
+    return this.paymentRepository.create(createPaymentMethodDto)
   }
 
   findAll() {
-    return `This action returns all paymentMethod`;
+    return this.paymentRepository.findAll({include: {all: true}})
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} paymentMethod`;
+    return this.paymentRepository.findByPk(id,{include:{all: true}})
   }
 
   update(id: number, updatePaymentMethodDto: UpdatePaymentMethodDto) {
-    return `This action updates a #${id} paymentMethod`;
+    return this.paymentRepository.update(updatePaymentMethodDto,{where: {id}, returning: true})
   }
 
   remove(id: number) {
-    return `This action removes a #${id} paymentMethod`;
+    return this.paymentRepository.destroy({where: {id}})
   }
 }
