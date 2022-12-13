@@ -19,10 +19,50 @@ import { DistrictModule } from './district/district.module';
 import { TicketTypeModule } from './ticket_type/ticket_type.module';
 import { LanguageModule } from './language/language.module';
 import { CountryModule } from './country/country.module';
-
+import { SequelizeModule } from '@nestjs/sequelize';
+import { ConfigModule } from '@nestjs/config';
+import { Admin } from './admin/entities/admin.entity';
+import { VenueType } from './venue_type/entities/venue_type.entity';
+import { Country } from './country/entities/country.entity';
+import { Region } from './region/entities/region.entity';
 
 @Module({
-  imports: [EventModule, VenueModule, TicketModule, AdminModule, BookingModule, CustomerCardModule, CardModule, SeatTypeModule, HumanCategoryModule, EventTypeModule, CustomerModule, SeatModule, VenueTypeModule, VenuePhotoModule, StatusModule, RegionModule, DistrictModule, TicketTypeModule, LanguageModule, CountryModule],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: `.${process.env.NODE_ENV}.env`
+    }),
+    SequelizeModule.forRoot({
+      dialect: 'postgres',
+      host:process.env.POSTGRES_HOST,
+      port:Number(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      models: [Admin, VenueType,Country,Region],
+      autoLoadModels: true,
+      logging: false
+    }),
+    EventModule,
+    VenueModule,
+    TicketModule,
+    AdminModule,
+    BookingModule,
+    CustomerCardModule,
+    CardModule,
+    SeatTypeModule,
+    HumanCategoryModule,
+    EventTypeModule,
+    CustomerModule,
+    SeatModule,
+    VenueTypeModule,
+    VenuePhotoModule,
+    StatusModule,
+    RegionModule,
+    DistrictModule,
+    TicketTypeModule,
+    LanguageModule,
+    CountryModule,
+  ],
   controllers: [],
   providers: [],
 })
