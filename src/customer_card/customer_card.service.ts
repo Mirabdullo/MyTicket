@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateCustomerCardDto } from './dto/create-customer_card.dto';
 import { UpdateCustomerCardDto } from './dto/update-customer_card.dto';
+import { CustomerCard } from './entities/customer_card.entity';
 
 @Injectable()
 export class CustomerCardService {
+  constructor(
+    @InjectModel(CustomerCard) private cardRepository: typeof CustomerCard
+  ){}
   create(createCustomerCardDto: CreateCustomerCardDto) {
-    return 'This action adds a new customerCard';
+    return this.cardRepository.create(createCustomerCardDto)
   }
 
   findAll() {
-    return `This action returns all customerCard`;
+    return this.cardRepository.findAll({include: {all: true}})
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} customerCard`;
+    return this.cardRepository.findByPk(id, {include: {all: true}})
   }
 
   update(id: number, updateCustomerCardDto: UpdateCustomerCardDto) {
-    return `This action updates a #${id} customerCard`;
+    return this.cardRepository.update(updateCustomerCardDto, {where: {id}, returning: true})
   }
 
   remove(id: number) {
-    return `This action removes a #${id} customerCard`;
+    return this.cardRepository.destroy({where: {id}})
   }
 }

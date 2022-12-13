@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { Customer } from "src/customer/entities/customer.entity";
 
 @Table({tableName: 'customet_card'})
 export class CustomerCard extends Model<CustomerCard>{
@@ -10,9 +11,50 @@ export class CustomerCard extends Model<CustomerCard>{
     })
     id: number
 
+    @ForeignKey(() => Customer)
+    @Column({
+        type: DataType.INTEGER,
+    })
+
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    first_name: string
+    name: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    phone: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    number: string
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    year: number
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    month: number
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false
+    })
+    is_active: boolean
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false
+    })
+    is_main: boolean
 }
