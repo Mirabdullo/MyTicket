@@ -18,14 +18,14 @@ export class CustomerAddressService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} customerAddress`;
+    return this.addressRepository.findByPk(id, {include: {all: true}})
   }
 
   update(id: number, updateCustomerAddressDto: UpdateCustomerAddressDto) {
-    return `This action updates a #${id} customerAddress`;
+    return this.addressRepository.update(updateCustomerAddressDto,{where: {id}, returning: true})
   }
 
   remove(id: number) {
-    return `This action removes a #${id} customerAddress`;
+    return this.addressRepository.destroy({where: {id}})
   }
 }

@@ -67,7 +67,7 @@ export class CustomerAddress extends Model<CustomerAddress>{
     post_index: string
 
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.STRING,
     })
-    info: number
+    info: string
 }

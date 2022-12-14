@@ -43,5 +43,5 @@ export class CreateCustomerAddressDto {
 
   @IsNotEmpty()
   @IsString()
-  info: number;
+  info: string;
 }
