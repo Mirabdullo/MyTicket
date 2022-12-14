@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { Ticket } from './entities/ticket.entity';
 
 @Injectable()
 export class TicketService {
+  constructor(
+    @InjectModel(Ticket) private ticketRepository: typeof Ticket
+  ){}
+
   create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
+    return this.ticketRepository.create(createTicketDto)
   }
 
   findAll() {
-    return `This action returns all ticket`;
+    return this.ticketRepository.findAll({include: {all: true}})
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} ticket`;
+    return this.ticketRepository.findByPk(id, {include: {all: true}})
   }
 
   update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
+    return this.ticketRepository.update(updateTicketDto, {where: {id}, returning: true})
   }
 
   remove(id: number) {
-    return `This action removes a #${id} ticket`;
+    return this.ticketRepository.destroy({where: {id}})
   }
 }
