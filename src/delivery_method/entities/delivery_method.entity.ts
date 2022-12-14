@@ -14,5 +14,5 @@ export class DeliveryMethod extends Model<DeliveryMethod>{
         type: DataType.STRING,
         allowNull: false
     })
-    name: string
+    delivery_name: string
 }

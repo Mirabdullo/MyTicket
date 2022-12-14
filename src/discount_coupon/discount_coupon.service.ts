@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateDiscountCouponDto } from './dto/create-discount_coupon.dto';
 import { UpdateDiscountCouponDto } from './dto/update-discount_coupon.dto';
+import { DiscountCoupon } from './entities/discount_coupon.entity';
 
 @Injectable()
 export class DiscountCouponService {
+  constructor(
+    @InjectModel(DiscountCoupon) private discountRepository: typeof DiscountCoupon
+  ){}
+
   create(createDiscountCouponDto: CreateDiscountCouponDto) {
-    return 'This action adds a new discountCoupon';
+    return this.discountRepository.create(createDiscountCouponDto)
   }
 
   findAll() {
-    return `This action returns all discountCoupon`;
+    return this.discountRepository.findAll({include: {all: true}})
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} discountCoupon`;
+    return this.discountRepository.findByPk(id, {include: {all: true}})
   }
 
   update(id: number, updateDiscountCouponDto: UpdateDiscountCouponDto) {
-    return `This action updates a #${id} discountCoupon`;
+    return this.discountRepository.update(updateDiscountCouponDto, {where: {id}, returning: true})
   }
 
   remove(id: number) {
-    return `This action removes a #${id} discountCoupon`;
+    return this.discountRepository.destroy({where: {id}})
   }
 }
