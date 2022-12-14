@@ -1,9 +1,9 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsNumber, IsString, Max, Min } from "class-validator";
 
 export class CreateCustomerCardDto {
     @IsNotEmpty()
     @IsNumber()
-    customer_is: number
+    customer_id: number
 
     @IsNotEmpty()
     @IsString()
@@ -19,17 +19,17 @@ export class CreateCustomerCardDto {
 
     @IsNotEmpty()
     @IsNumber()
+    @Min(2022)
     year: number
 
-    @IsNotEmpty()
     @IsNumber()
+    @Min(1)
+    @Max(12)
     month: number
 
-    @IsNotEmpty()
     @IsBoolean()
     is_active: boolean
 
-    @IsNotEmpty()
     @IsBoolean()
     is_main: boolean
 

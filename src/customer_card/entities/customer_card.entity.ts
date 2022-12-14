@@ -15,6 +15,7 @@ export class CustomerCard extends Model<CustomerCard>{
     @Column({
         type: DataType.INTEGER,
     })
+    customer_id: number
 
     @Column({
         type: DataType.STRING,
