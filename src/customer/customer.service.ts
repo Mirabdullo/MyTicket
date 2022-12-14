@@ -12,8 +12,6 @@ import { Customer } from './entities/customer.entity';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { Tokens } from 'src/tokens/tokens';
-import { TokensService } from 'src/tokens/tokens.service';
 import { LoginDto } from './dto/login-auth.dto';
 
 @Injectable()

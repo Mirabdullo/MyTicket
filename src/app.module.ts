@@ -30,6 +30,7 @@ import { DeliveryMethodModule } from './delivery_method/delivery_method.module';
 import { DiscountCouponModule } from './discount_coupon/discount_coupon.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
+import { CustomerAddressModule } from './customer_address/customer_address.module';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { resolve } from 'path';
     PaymentMethodModule,
     DeliveryMethodModule,
     DiscountCouponModule,
+    CustomerAddressModule,
   ],
   controllers: [],
   providers: [],
