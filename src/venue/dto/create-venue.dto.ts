@@ -17,6 +17,9 @@ export class CreateVenueDto {
     @IsString({message: 'phone must be string'})
     phone: string
     @IsNotEmpty()
+    @IsNumber({},{message: 'name must be number'})
+    venue_type_id: number
+    @IsNotEmpty()
     @IsString({message: 'schema must be string'})
     schema: string
     @IsNotEmpty()

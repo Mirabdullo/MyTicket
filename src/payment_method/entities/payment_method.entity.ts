@@ -14,5 +14,5 @@ export class PaymentMethod extends Model<PaymentMethod>{
         type: DataType.STRING,
         allowNull: false
     })
-    name: string
+    payment_name: string
 }

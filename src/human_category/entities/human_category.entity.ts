@@ -32,9 +32,9 @@ export class HumanCategory extends Model<HumanCategory>{
     finish_age: number
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    gender: string
+    gender: number
 
 }
