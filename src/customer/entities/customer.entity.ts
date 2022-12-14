@@ -1,6 +1,6 @@
 import { Column, DataType, Min, Model, Table } from "sequelize-typescript";
 
-@Table({tableName: 'customer'})
+@Table({tableName: 'customer', timestamps: false})
 export class Customer extends Model<Customer>{
     @Column({
         type: DataType.INTEGER,
@@ -25,7 +25,8 @@ export class Customer extends Model<Customer>{
 
     @Column({
         type: DataType.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     })
     phone: string
 
@@ -37,7 +38,8 @@ export class Customer extends Model<Customer>{
 
     @Column({
         type: DataType.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     })
     email: string
 
@@ -46,7 +48,7 @@ export class Customer extends Model<Customer>{
         type: DataType.DATE,
         allowNull: false
     })
-    birth_day: string
+    birth_day: Date
 
 
     @Column({
