@@ -1,4 +1,5 @@
-import { Column, DataType, Min, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Min, Model, Table } from "sequelize-typescript";
+import { Language } from "src/language/entities/language.entity";
 
 @Table({tableName: 'customer', timestamps: false})
 export class Customer extends Model<Customer>{
@@ -57,7 +58,7 @@ export class Customer extends Model<Customer>{
     })
     gender: number
 
-
+    @ForeignKey(() => Language)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
@@ -68,4 +69,7 @@ export class Customer extends Model<Customer>{
         type: DataType.STRING,
     })
     hashed_refresh_token: string
+
+    @BelongsTo(() => Language)
+    language: Language
 }

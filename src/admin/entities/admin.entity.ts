@@ -1,7 +1,7 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 
-@Table({tableName: 'admin'})
+@Table({tableName: 'admin', timestamps: false})
 export class Admin extends Model<Admin>{
     @Column({
         type: DataType.INTEGER,

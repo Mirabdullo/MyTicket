@@ -1,7 +1,8 @@
-import { Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
 import { Col } from "sequelize/types/utils";
 import { District } from "src/district/entities/district.entity";
 import { Region } from "src/region/entities/region.entity";
+import { VenueType } from "src/venue_type/entities/venue_type.entity";
 
 @Table({tableName: 'venue'})
 export class Venue extends Model<Venue>{
@@ -43,6 +44,7 @@ export class Venue extends Model<Venue>{
     })
     phone: string
 
+    @ForeignKey(() => VenueType)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
@@ -69,5 +71,12 @@ export class Venue extends Model<Venue>{
     })
     district_id: number
 
+    @BelongsTo(() => VenueType)
+    venueType: VenueType
 
+    @BelongsTo(() => Region)
+    region: Region
+
+    @BelongsTo(() => District)
+    district: District
 }

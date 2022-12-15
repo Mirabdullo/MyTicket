@@ -1,6 +1,6 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
-@Table({tableName: 'delivery'})
+@Table({tableName: 'delivery', timestamps: false})
 export class DeliveryMethod extends Model<DeliveryMethod>{
     @Column({
         type: DataType.INTEGER,
@@ -14,5 +14,5 @@ export class DeliveryMethod extends Model<DeliveryMethod>{
         type: DataType.STRING,
         allowNull: false
     })
-    delivery_name: string
+    name: string
 }

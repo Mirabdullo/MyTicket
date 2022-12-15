@@ -1,4 +1,8 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { EventType } from "src/event_type/entities/event_type.entity";
+import { HumanCategory } from "src/human_category/entities/human_category.entity";
+import { Language } from "src/language/entities/language.entity";
+import { Venue } from "src/venue/entities/venue.entity";
 
 @Table({tableName: 'event', timestamps: false})
 export class Event extends Model<Event>{
@@ -18,9 +22,8 @@ export class Event extends Model<Event>{
 
     @Column({
         type: DataType.STRING,
-        allowNull: false
     })
-    photo: string
+    image: string
 
     @Column({
         type: DataType.DATE,
@@ -52,12 +55,14 @@ export class Event extends Model<Event>{
     })
     info: string
 
+    @ForeignKey(() => EventType)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     event_type_id: number
 
+    @ForeignKey(() => HumanCategory)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
@@ -65,12 +70,14 @@ export class Event extends Model<Event>{
     human_category_id: number
 
 
+    @ForeignKey(() => Venue)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     venue_id: number
 
+    @ForeignKey(() => Language)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
@@ -82,4 +89,16 @@ export class Event extends Model<Event>{
         allowNull: false
     })
     relase_date: Date
+
+    @BelongsTo(() => EventType)
+    eventType: EventType
+
+    @BelongsTo(() => HumanCategory)
+    humanCategory: HumanCategory
+
+    @BelongsTo(() => Venue)
+    venue: Venue
+
+    @BelongsTo(() => Language)
+    language: Language
 }

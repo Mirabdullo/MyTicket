@@ -1,4 +1,8 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { Country } from "src/country/entities/country.entity";
+import { Customer } from "src/customer/entities/customer.entity";
+import { District } from "src/district/entities/district.entity";
+import { Region } from "src/region/entities/region.entity";
 
 @Table({tableName: 'customer_address', timestamps: false, freezeTableName: true})
 export class CustomerAddress extends Model<CustomerAddress>{
@@ -10,6 +14,7 @@ export class CustomerAddress extends Model<CustomerAddress>{
     })
     id: number
 
+    @ForeignKey(() => Customer)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
@@ -22,18 +27,21 @@ export class CustomerAddress extends Model<CustomerAddress>{
     })
     name: string
 
+    @ForeignKey(() => Country)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     country_id: number
 
+    @ForeignKey(() => Region)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     region_id: number
 
+    @ForeignKey(() => District)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
@@ -69,5 +77,17 @@ export class CustomerAddress extends Model<CustomerAddress>{
     @Column({
         type: DataType.STRING,
     })
-    info: string
+    info: string 
+
+    @BelongsTo(() => Customer)
+    customer: Customer
+
+    @BelongsTo(() => Country)
+    country: Country
+
+    @BelongsTo(() => Region)
+    region: Region
+
+    @BelongsTo(() => District)
+    district: District
 }

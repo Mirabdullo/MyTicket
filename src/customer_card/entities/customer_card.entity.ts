@@ -1,4 +1,4 @@
-import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Customer } from "src/customer/entities/customer.entity";
 
 @Table({tableName: 'customet_card'})
@@ -58,4 +58,7 @@ export class CustomerCard extends Model<CustomerCard>{
         defaultValue: false
     })
     is_main: boolean
+
+    @BelongsTo(() => Customer)
+    customer: Customer
 }

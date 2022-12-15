@@ -1,15 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
-
   @Post()
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventService.create(createEventDto);
+  @UseInterceptors(FileInterceptor('image'))
+  create(@Body() createEventDto: CreateEventDto, @UploadedFile() image) {
+    console.log("object");
+    return this.eventService.create(createEventDto,image);
   }
 
   @Get()

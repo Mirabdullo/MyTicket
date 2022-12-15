@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { FilesService } from 'src/files/files.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
@@ -7,10 +8,22 @@ import { Event } from './entities/event.entity';
 @Injectable()
 export class EventService {
   constructor(
-    @InjectModel(Event) private eventRepository: typeof Event
+    @InjectModel(Event) private eventRepository: typeof Event,
+    private readonly fileService: FilesService,
+
   ){}
-  create(createEventDto: CreateEventDto) {
-    return this.eventRepository.create(createEventDto)
+  async create(createEventDto: CreateEventDto, image: any) {
+    try {
+      const fileName = await this.fileService.createFile(image);
+      const post = await this.eventRepository.create({
+        ...createEventDto,
+        image: fileName,
+      });
+      return post;
+    } catch (error) {
+      console.log(error);
+      throw new ForbiddenException("Serverda xatolik")
+    }
   }
 
   findAll() {

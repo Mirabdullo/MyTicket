@@ -12,9 +12,7 @@ export class CreateAdminDto {
     @IsString({message: "name must be string"})
     readonly password: string
 
-    @IsBoolean()
     is_active?: boolean
 
-    @IsBoolean()
     is_creator?: boolean
 }

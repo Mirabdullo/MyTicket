@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDateString, IsMilitaryTime, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateCardDto {
   @IsNotEmpty()
@@ -10,12 +10,12 @@ export class CreateCardDto {
   customer_id: number;
 
   @IsNotEmpty()
-  @IsDateString()
-  createdAt: Date;
+  @IsMilitaryTime()
+  createdAt: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  finishedAt: Date;
+  @IsMilitaryTime()
+  finishedAt: string;
 
   @IsNotEmpty()
   @IsNumber()

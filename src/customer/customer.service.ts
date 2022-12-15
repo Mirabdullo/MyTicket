@@ -161,20 +161,20 @@ export class CustomerService {
   }
 
 
-  private async validatecustomer(loginDto: LoginDto) {
-    const customer = await this.customerRepository.findOne({where: {email:loginDto.email}});
-    if (!customer) {
-      throw new UnauthorizedException('emil yoki password xato');
-    }
-    const validPassword = await bcrypt.compare(
-      loginDto.password,
-      customer.password,
-    );
-    if (customer && validPassword) {
-      return customer;
-    }
-    throw new UnauthorizedException('Email yoki password xato');
-  }
+  // private async validatecustomer(loginDto: LoginDto) {
+  //   const customer = await this.customerRepository.findOne({where: {email:loginDto.email}});
+  //   if (!customer) {
+  //     throw new UnauthorizedException('emil yoki password xato');
+  //   }
+  //   const validPassword = await bcrypt.compare(
+  //     loginDto.password,
+  //     customer.password,
+  //   );
+  //   if (customer && validPassword) {
+  //     return customer;
+  //   }
+  //   throw new UnauthorizedException('Email yoki password xato');
+  // }
 
 
 

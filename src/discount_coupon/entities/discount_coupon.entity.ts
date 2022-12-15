@@ -1,6 +1,6 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
-@Table({tableName: 'discount'})
+@Table({tableName: 'discount', timestamps: false})
 export class DiscountCoupon extends Model<DiscountCoupon>{
     @Column({
         type: DataType.INTEGER,
@@ -14,5 +14,5 @@ export class DiscountCoupon extends Model<DiscountCoupon>{
         type: DataType.STRING,
         allowNull: false
     })
-    discount_name: string
+    name: string
 }

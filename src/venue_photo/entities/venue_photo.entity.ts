@@ -1,4 +1,4 @@
-import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Venue } from "src/venue/entities/venue.entity";
 
 @Table({tableName: 'venue_photo'})
@@ -21,5 +21,8 @@ export class VenuePhoto extends Model<VenuePhoto>{
         type: DataType.STRING
     })
     image: string
+
+    @BelongsTo(() => Venue)
+    venue: Venue
 
 }

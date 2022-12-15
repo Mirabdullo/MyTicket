@@ -1,4 +1,4 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 
 @Table({tableName: 'event_type'})
 export class EventType extends Model<EventType> {
@@ -11,14 +11,22 @@ export class EventType extends Model<EventType> {
     id: number
 
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.STRING,
         allowNull: true,
         unique: true
     })
     name: string
 
+    @ForeignKey(() => EventType)
     @Column({
         type: DataType.INTEGER
     })
     parent_event_type_id: number
+
+    @BelongsTo(() => EventType)
+    eventType: EventType
 }
+
+/* 
+!   
+*/

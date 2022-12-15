@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
+import { Booking } from './entities/booking.entity';
 
 @Injectable()
 export class BookingService {
+  constructor(
+    @InjectModel(Booking) private bookingRepository: typeof Booking
+  ){}
+
   create(createBookingDto: CreateBookingDto) {
-    return 'This action adds a new booking';
+    return this.bookingRepository.create(createBookingDto) 
   }
 
   findAll() {
-    return `This action returns all booking`;
+    return this.bookingRepository.findAll({include: {all: true}})
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} booking`;
+    return this.bookingRepository.findByPk(id, {include: {all: true}})
   }
 
   update(id: number, updateBookingDto: UpdateBookingDto) {
-    return `This action updates a #${id} booking`;
+    return this.bookingRepository.update(updateBookingDto, {where: {id}, returning: true})
   }
 
   remove(id: number) {
-    return `This action removes a #${id} booking`;
+    return this.bookingRepository.destroy({where: {id}})
   }
 }

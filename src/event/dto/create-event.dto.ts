@@ -1,13 +1,9 @@
-import { IsDate, IsDateString, IsMilitaryTime, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsDate, IsDateString, IsMilitaryTime, IsNotEmpty, IsNumber, IsNumberString, IsOptional, IsString } from "class-validator"
 
 export class CreateEventDto {
     @IsNotEmpty()
     @IsString()
     event_name: string
-
-    @IsNotEmpty()
-    @IsString()
-    photo: string
 
     @IsNotEmpty()
     @IsDateString()
@@ -30,19 +26,19 @@ export class CreateEventDto {
     info: string
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsNumberString()
     event_type_id: number
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsNumberString()
     human_category_id: number
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsNumberString()
     venue_id: number
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsNumberString()
     lang_id: number
 
     @IsOptional()
