@@ -32,34 +32,20 @@ export class AdminService {
       password: hashedPAssword,
     });
 
-    const token = this.getTokens(admin.id, admin.email, admin.is_active, admin.is_creator);
+    const token = await this.getTokens(admin.id, admin.email, admin.is_active, admin.is_creator);
 
-    const hashedRefreshToken = await bcrypt.hash(
-      (
-        await token
-      ).refresh_token,
-      7,
-    );
-    const newAdmin = await this.adminRepository.update(
-      {
-        refresh_token: hashedRefreshToken,
-      },
-      { where: { id: admin.id }, returning: true },
-    );
-      const refresh = (await token).refresh_token
-    res.cookie('refresh_token', refresh, {
+    await this.updateRefreshTokenHash(admin.id, token.refresh_token)
+    
+    res.cookie('refresh_token', token.refresh_token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
     return {
-      ...newAdmin[1][0].dataValues,
-      access_token: (await token).access_token,
-      refresh_token: (await token).refresh_token
+      message: "Admin created!",
+      access_token: token.access_token,
+      refresh_token: token.refresh_token
     }
   }
-
-
-
 
 
   async signin(loginDto: LoginDto, res: Response) {
@@ -67,43 +53,37 @@ export class AdminService {
     const admin = await this.adminRepository.findOne({
         where: {email}
     })
-
     if(!admin){
         throw new ForbiddenException("Access Denide")
     }
-
 
     const passwordMatches = await bcrypt.compare(password, admin.password)
     if(!passwordMatches) throw new ForbiddenException("Access Denide")
 
     const tokens = await this.getTokens(admin.id, admin.email,admin.is_active, admin.is_creator)
-    const hashed_refresh_token = await bcrypt.hash(tokens.refresh_token, 7)
-    const newAdmin = await this.adminRepository.update({
-      refresh_token: hashed_refresh_token
-    }, {where: {id: admin.id}, returning: true})
+    await this.updateRefreshTokenHash(admin.id, tokens.refresh_token)
+
     res.cookie("refresh_token", tokens.refresh_token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true
     })
     return {
-      ...newAdmin[1][0].dataValues,
-      access_token: (await tokens).access_token,
-      refresh_token: (await tokens).refresh_token
+      message: "Admin signin",
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token
     }
   }
 
 
   async logout(id: number) {
     try {
-      console.log(id);
       const admin = await this.adminRepository.findByPk(id)
-      console.log(admin);
       if(!admin){
         throw new HttpException('Malumot topilmadi', HttpStatus.NOT_FOUND)
       }
       const user = await this.adminRepository.update({
-        ///////////////////
-      },{ where: {id:+id}})
+        refresh_token: null
+      },{ where: {id: id}})
       console.log(user);
       if(!user) throw new ForbiddenException('Access denide')
       return true
@@ -156,6 +136,16 @@ export class AdminService {
     };
   }
 
+
+  async updateRefreshTokenHash(
+    id: number,
+    refreshToken: string,
+  ): Promise<void> {
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 7)
+    await this.adminRepository.update({
+      refresh_token: hashedRefreshToken
+    }, {where: {id},returning: true})
+  }
 
 
 }
