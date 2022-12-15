@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Card } from "src/card/entities/card.entity";
 import { DeliveryMethod } from "src/delivery_method/entities/delivery_method.entity";
@@ -7,6 +8,7 @@ import { Status } from "src/status/entities/status.entity";
 
 @Table({tableName: 'booking', freezeTableName: true, timestamps: false})
 export class Booking extends Model<Booking>{
+    @ApiProperty({example: '1', description: "Unikal id"})
     @Column({
         type: DataType.INTEGER,
         unique: true,
@@ -15,6 +17,7 @@ export class Booking extends Model<Booking>{
     })
     id: number
 
+    @ApiProperty({example: '1', description: "Card id"})
     @ForeignKey(() => Card)
     @Column({
         type: DataType.INTEGER,
@@ -22,6 +25,7 @@ export class Booking extends Model<Booking>{
     })
     card_id: number
 
+    @ApiProperty({example: '12:00', description: "Boshlanish vaqti"})
     @Column({
         type: DataType.TIME,
         allowNull: false
@@ -29,12 +33,14 @@ export class Booking extends Model<Booking>{
     createdAt: string
 
 
+    @ApiProperty({example: '12:30', description: "Tugash vaqti"})
     @Column({
         type: DataType.TIME,
         allowNull: false
     })
     finishedAt: string
 
+    @ApiProperty({example: '1', description: "Payment id"})
     @ForeignKey(() => PaymentMethod)
     @Column({
         type: DataType.INTEGER,
@@ -42,6 +48,7 @@ export class Booking extends Model<Booking>{
     })
     payment_method_id: number
 
+    @ApiProperty({example: '1', description: "Delivery id"})
     @ForeignKey(() => DeliveryMethod)
     @Column({
         type: DataType.INTEGER,
@@ -49,6 +56,7 @@ export class Booking extends Model<Booking>{
     })
     delivery_method_id: number
 
+    @ApiProperty({example: '1', description: "Discount id"})
     @ForeignKey(() => DiscountCoupon)
     @Column({
         type: DataType.INTEGER,
@@ -56,6 +64,7 @@ export class Booking extends Model<Booking>{
     })
     discount_coupon_id: number
 
+    @ApiProperty({example: '1', description: "Status id"})
     @ForeignKey(() => Status)
     @Column({
         type: DataType.INTEGER,
