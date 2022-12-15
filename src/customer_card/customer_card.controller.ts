@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { AdminOrCustomer } from 'src/guards/jwtAdminCustomer';
 import { CustomerCardService } from './customer_card.service';
 import { CreateCustomerCardDto } from './dto/create-customer_card.dto';
 import { UpdateCustomerCardDto } from './dto/update-customer_card.dto';
@@ -12,6 +13,7 @@ export class CustomerCardController {
     return this.customerCardService.create(createCustomerCardDto);
   }
 
+  @UseGuards(AdminOrCustomer)
   @Get()
   findAll() {
     return this.customerCardService.findAll();

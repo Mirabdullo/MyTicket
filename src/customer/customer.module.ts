@@ -7,15 +7,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Customer]),
-    JwtModule.register({
-      secret: process.env.PRIVATE_KEY || 'SECRET',
-      signOptions: {
-        expiresIn: '24h'
-      }
-    }),
-
-  ],
+    SequelizeModule.forFeature([Customer]), JwtModule],
   controllers: [CustomerController],
   providers: [CustomerService]
 })

@@ -20,7 +20,7 @@ export class CustomerService {
     @InjectModel(Customer) private customerRepository: typeof Customer,
     private readonly jwtService: JwtService,
   ) {}
-
+////////////////////////////<<<<<<<<<<<<<<<<<CREATED>>>>>>>>>>>>>>>>////////////////
   async create(createCustomerDto: CreateCustomerDto, res: Response) {
     const candidate = await this.customerRepository.findOne({
       where: { email: createCustomerDto.email },
@@ -38,35 +38,22 @@ export class CustomerService {
       password: hashedPAssword,
     });
 
-    const token = this.getTokens(customer.id, customer.email);
-
-    const hashedRefreshToken = await bcrypt.hash(
-      (
-        await token
-      ).refresh_token,
-      7,
-    );
-    const newCustomer = await this.customerRepository.update(
-      {
-        hashed_refresh_token: hashedRefreshToken,
-      },
-      { where: { id: customer.id }, returning: true },
-    );
-      const refresh = (await token).refresh_token
-      console.log(refresh);
-    res.cookie('refresh_token', refresh, {
+    const token = await this.getTokens(customer.id, customer.email);
+    await this.updateRefreshTokenHash(customer.id, token.refresh_token)
+    
+    res.cookie('refresh_token', token.refresh_token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
-    console.log(newCustomer[1][0]);
     return {
-      ...newCustomer[1][0].dataValues,
-      access_token: (await token).access_token,
-      refresh_token: (await token).refresh_token
+      id: customer.id,
+      message: "Customer created!",
+      access_token: token.access_token,
+      refresh_token: token.refresh_token
     }
   }
 
-
+/////////////////////<<<<<<<<<<<SIGNIN>>>>>>>>>>>>>//////////////////
   async signin(loginDto: LoginDto, res: Response) {
     const {email, password} = loginDto
     const customer = await this.customerRepository.findOne({
@@ -77,39 +64,34 @@ export class CustomerService {
         throw new ForbiddenException("Access Denide")
     }
 
-
     const passwordMatches = await bcrypt.compare(password, customer.password)
     if(!passwordMatches) throw new ForbiddenException("Access Denide")
 
     const tokens = await this.getTokens(customer.id, customer.email)
-    const hashed_refresh_token = await bcrypt.hash(tokens.refresh_token, 7)
-    const newCustomer = await this.customerRepository.update({
-      hashed_refresh_token: hashed_refresh_token
-    }, {where: {id: customer.id}, returning: true})
+    await this.updateRefreshTokenHash(customer.id, tokens.refresh_token)
+
     res.cookie("refresh_token", tokens.refresh_token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true
     })
     return {
-      ...newCustomer[1][0].dataValues,
-      access_token: (await tokens).access_token,
-      refresh_token: (await tokens).refresh_token
+      id: customer.id,
+      message: "Customer sign in",
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token
     }
   }
 
 
   async logout(id: number) {
     try {
-      console.log(id);
       const customer = await this.customerRepository.findByPk(id)
-      console.log(customer);
       if(!customer){
         throw new HttpException('Malumot topilmadi', HttpStatus.NOT_FOUND)
       }
       const user = await this.customerRepository.update({
-        hashed_refresh_token: ""
+        hashed_refresh_token: null
       },{ where: {id:+id}})
-      console.log(user);
       if(!user) throw new ForbiddenException('Access denide')
       return true
     } catch (error) {
@@ -161,21 +143,15 @@ export class CustomerService {
   }
 
 
-  // private async validatecustomer(loginDto: LoginDto) {
-  //   const customer = await this.customerRepository.findOne({where: {email:loginDto.email}});
-  //   if (!customer) {
-  //     throw new UnauthorizedException('emil yoki password xato');
-  //   }
-  //   const validPassword = await bcrypt.compare(
-  //     loginDto.password,
-  //     customer.password,
-  //   );
-  //   if (customer && validPassword) {
-  //     return customer;
-  //   }
-  //   throw new UnauthorizedException('Email yoki password xato');
-  // }
-
+  async updateRefreshTokenHash(
+    id: number,
+    refreshToken: string,
+  ): Promise<void> {
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 7)
+    await this.customerRepository.update({
+      hashed_refresh_token: hashedRefreshToken
+    }, {where: {id},returning: true})
+  }
 
 
 }

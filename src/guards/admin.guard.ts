@@ -2,22 +2,15 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, U
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { Observable } from "rxjs";
-import { ROLES_KEY } from "src/decorators/roles-auth.decorator";
 
 @Injectable()
-export class RolesGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
     constructor(private readonly jwtService: JwtService,
         private readonly reflector: Reflector) {}
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         try {
-            const requiredRoles = this.reflector.getAllAndOverride<string[]>(
-                ROLES_KEY,
-                [context.getHandler(), context.getClass()])
-
-            if(!requiredRoles) {
-                return true
-            }
             const req = context.switchToHttp().getRequest()
+            const id = req.params.id
             const authHeader = req.headers.authorization
             const bearer = authHeader.split(' ')[0]
             const token = authHeader.split(' ')[1]
@@ -26,10 +19,18 @@ export class RolesGuard implements CanActivate {
                     message: "Foydalanuvchi avtorizatsiyadan o'tmagan",
                 })
             }
-            const user = this.jwtService.verify(token)
-            req.user = user
+            const admin = this.jwtService.verify(token,{secret: process.env.ACCESS_TOKEN_KEY})
+            if(admin.is_creator){
+                return true
+            }
 
-            return user.roles.some((role) => requiredRoles.includes(role.value))
+            if(admin.sub !== id){
+                throw new UnauthorizedException({
+                    message: "Adminga ruxsat etilmagan"
+                })
+            }
+
+            return true
         } catch (error) {
             throw new HttpException(
                 "Ruxsat etilmagan foydalanuvchi",
