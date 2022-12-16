@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateVenuePhotoDto } from './dto/create-venue_photo.dto';
 import { UpdateVenuePhotoDto } from './dto/update-venue_photo.dto';
@@ -28,7 +28,19 @@ export class VenuePhotoService {
     return this.venuePhotoRepository.findByPk(id, { include: { all: true } });
   }
 
-  update(id: number, updateVenuePhotoDto: UpdateVenuePhotoDto) {
+  async update(id: number, updateVenuePhotoDto: UpdateVenuePhotoDto, image: any) {
+    const event = await this.venuePhotoRepository.findByPk(id)
+    if(!event) throw new HttpException("Ma'lumot topilmadi", HttpStatus.NOT_FOUND)
+    if(image){
+      await this.fileService.removeFile(event.image)
+      const fileName = await this.fileService.createFile(image);
+      
+      return this.venuePhotoRepository.update({
+        ...updateVenuePhotoDto,
+        image: fileName
+      },{where: {id}, returning: true})
+
+    }
     return this.venuePhotoRepository.update(updateVenuePhotoDto, {
       where: { id },
       returning: true,

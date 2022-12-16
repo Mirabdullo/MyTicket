@@ -11,7 +11,7 @@ async function start() {
     app.useGlobalPipes(new ValidationPipe())
     app.use(cookieParser())
     const config = new DocumentBuilder()
-    .setTitle('NestJs Test')
+    .setTitle('Ticket')
     .setDescription('Rest Api')
     .setVersion('1.0.0')
     .addTag('NodeJs, NestJs, Postgres, Sequalize')

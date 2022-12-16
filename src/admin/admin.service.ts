@@ -94,6 +94,16 @@ export class AdminService {
   }
 
 
+  async ActivateAdmin(id: number){
+    try {
+      const admin = await this.adminRepository.findByPk(id)
+      return this.adminRepository.update({
+        is_active: true
+      }, {where: {id}, returning: true})
+    } catch (error) {
+      throw new HttpException("Serverda xatolik", HttpStatus.FORBIDDEN)
+    }
+  }
 
 
   findAll() {

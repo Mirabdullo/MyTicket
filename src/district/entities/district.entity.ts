@@ -1,9 +1,11 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { cp } from "fs";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Region } from "src/region/entities/region.entity";
 
 @Table({tableName: "district"})
 export class District extends Model<District>{
+    @ApiProperty({example: '1', description: "Unikal ID"})
     @Column({
         type: DataType.INTEGER,
         unique: true,
@@ -12,6 +14,7 @@ export class District extends Model<District>{
     })
     id: number
 
+    @ApiProperty({example: '1', description: "Region ID"})
     @ForeignKey(() => Region)
     @Column({
         type: DataType.INTEGER,
@@ -19,6 +22,7 @@ export class District extends Model<District>{
     })
     region_id: number
 
+    @ApiProperty({example: 'Andijon', description: "district nomi"})
     @Column({
         type: DataType.STRING,
         allowNull: true,

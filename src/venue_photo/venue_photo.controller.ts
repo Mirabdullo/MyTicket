@@ -3,7 +3,9 @@ import { VenuePhotoService } from './venue_photo.service';
 import { CreateVenuePhotoDto } from './dto/create-venue_photo.dto';
 import { UpdateVenuePhotoDto } from './dto/update-venue_photo.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Venue photos')
 @Controller('venue-photo')
 export class VenuePhotoController {
   constructor(private readonly venuePhotoService: VenuePhotoService) {}
@@ -25,8 +27,8 @@ export class VenuePhotoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVenuePhotoDto: UpdateVenuePhotoDto) {
-    return this.venuePhotoService.update(+id, updateVenuePhotoDto);
+  update(@Param('id') id: string, @Body() updateVenuePhotoDto: UpdateVenuePhotoDto, @UploadedFile() image) {
+    return this.venuePhotoService.update(+id, updateVenuePhotoDto, image);
   }
 
   @Delete(':id')

@@ -6,7 +6,7 @@ import {
   IsNumber,
 } from 'class-validator';
 
-export class CreateCardDto {
+export class CreateCartDto {
   @ApiProperty({ example: '1', description: 'ticket id' })
   @IsNotEmpty()
   @IsNumber()

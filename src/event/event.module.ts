@@ -8,11 +8,13 @@ import { EventType } from 'src/event_type/entities/event_type.entity';
 import { HumanCategory } from 'src/human_category/entities/human_category.entity';
 import { Venue } from 'src/venue/entities/venue.entity';
 import { Language } from 'src/language/entities/language.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Event,EventType,HumanCategory,Venue,Language]),
-    FilesModule
+    FilesModule,
+    JwtModule
   ],
   controllers: [EventController],
   providers: [EventService]

@@ -1,4 +1,6 @@
-import { BelongsTo, Column, DataType, ForeignKey, Min, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Min, Model, Table } from "sequelize-typescript";
+import { CustomerAddress } from "src/customer_address/entities/customer_address.entity";
+import { CustomerCard } from "src/customer_card/entities/customer_card.entity";
 import { Language } from "src/language/entities/language.entity";
 
 @Table({tableName: 'customer', timestamps: false})
@@ -72,4 +74,10 @@ export class Customer extends Model<Customer>{
 
     @BelongsTo(() => Language)
     language: Language
+
+    @HasMany(() => CustomerCard)
+    cards: CustomerCard[]
+
+    @HasMany(() => CustomerAddress)
+    address: CustomerAddress
 }

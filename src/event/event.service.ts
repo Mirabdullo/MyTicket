@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { FilesService } from 'src/files/files.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -34,11 +34,25 @@ export class EventService {
     return this.eventRepository.findByPk(id,{include: {all: true}})
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
+  async update(id: number, updateEventDto: UpdateEventDto, image: any) {
+    const event = await this.eventRepository.findByPk(id)
+    if(!event) throw new HttpException("Ma'lumot topilmadi", HttpStatus.NOT_FOUND)
+    if(image){
+      await this.fileService.removeFile(event.image)
+      const fileName = await this.fileService.createFile(image);
+      
+      return this.eventRepository.update({
+        ...updateEventDto,
+        image: fileName
+      },{where: {id}, returning: true})
+
+    }
     return this.eventRepository.update(updateEventDto, {where: {id}, returning: true})
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const event = await this.eventRepository.findByPk(id)
+    if(!event) throw new HttpException("Ma'lumot topilmadi", HttpStatus.NOT_FOUND)
     return this.eventRepository.destroy({where: {id}})
   }
 }

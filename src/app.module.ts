@@ -5,7 +5,7 @@ import { TicketModule } from './ticket/ticket.module';
 import { AdminModule } from './admin/admin.module';
 import { BookingModule } from './booking/booking.module';
 import { CustomerCardModule } from './customer_card/customer_card.module';
-import { CardModule } from './card/card.module';
+import { CardModule } from './cart/cart.module';
 import { SeatTypeModule } from './seat_type/seat_type.module';
 import { HumanCategoryModule } from './human_category/human_category.module';
 import { EventTypeModule } from './event_type/event_type.module';
@@ -35,21 +35,21 @@ import { CustomerAddressModule } from './customer_address/customer_address.modul
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`
+      envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     ServeStaticModule.forRoot({
-      rootPath: resolve(__dirname, 'static')
+      rootPath: resolve(__dirname, 'static'),
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host:process.env.POSTGRES_HOST,
-      port:Number(process.env.POSTGRES_PORT),
+      host: process.env.POSTGRES_HOST,
+      port: Number(process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Admin, VenueType,Country,Region],
+      models: [Admin, VenueType, Country, Region],
       autoLoadModels: true,
-      logging: false
+      logging: false,
     }),
     EventModule,
     VenueModule,

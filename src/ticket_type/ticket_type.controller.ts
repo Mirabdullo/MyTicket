@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TicketTypeService } from './ticket_type.service';
 import { CreateTicketTypeDto } from './dto/create-ticket_type.dto';
 import { UpdateTicketTypeDto } from './dto/update-ticket_type.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Ticket types')
 @Controller('ticket-type')
 export class TicketTypeController {
   constructor(private readonly ticketTypeService: TicketTypeService) {}

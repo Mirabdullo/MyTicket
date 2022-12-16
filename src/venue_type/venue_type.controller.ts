@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { VenueTypeService } from './venue_type.service';
 import { CreateVenueTypeDto } from './dto/create-venue_type.dto';
 import { UpdateVenueTypeDto } from './dto/update-venue_type.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Venue types')
 @Controller('venue-type')
 export class VenueTypeController {
   constructor(private readonly venueTypeService: VenueTypeService) {}

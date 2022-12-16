@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
+import { join } from 'path';
 import * as uuid from 'uuid';
 
 @Injectable()
 export class FilesService {
-    async createFile(file): Promise<string>{
+    async createFile(file: any): Promise<string>{
         try {
             const fileName = uuid.v4() + '.jpeg'
             const filePath = path.resolve(__dirname, '..', 'static')
@@ -21,4 +22,17 @@ export class FilesService {
             )
         }
     }
+
+
+    async removeFile(image: any){
+        try {
+            const filePath = path.resolve(__dirname, '..', 'static')
+            fs.unlinkSync(path.join(filePath,image))
+            return true
+        } catch (error) {
+            throw new HttpException("Faynini yangilashda xatolik", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+
 }

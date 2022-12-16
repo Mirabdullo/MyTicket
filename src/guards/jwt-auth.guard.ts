@@ -22,8 +22,7 @@ export class JwtAuthGuard implements CanActivate {
             }
             console.log(1);
             const user = this.jwtService.verify(token,{secret:process.env.ACCESS_TOKEN_KEY})
-            console.log(user);
-            console.log(user.sub, +id)
+
             if(user.sub !== +id){
                 throw new UnauthorizedException({
                     message: "Ruxsat etilmagan foydalanuvchi"
